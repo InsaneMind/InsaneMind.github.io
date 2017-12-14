@@ -23,6 +23,108 @@
             <img id="image" src="sprite.png" alt="">
         </div>
     </div>
-    <script src="JS.js" type="text/javascript" ></script>
+    <script>
+        //создаем переменные a и b
+var rand1 = Math.floor(Math.random() * (9 - 6 + 1) + 6);
+do {
+    var rand2 = Math.floor(Math.random() * (8 - 2 + 1) + 2);
+} while (rand1 + rand2 < 11 || rand1 + rand2 > 14);
+//отображаем пример
+var example1 = document.getElementById('example1');
+example1.innerHTML = (rand1);
+var example2 = document.getElementById('example2');
+example2.innerHTML = (rand2);
+
+//отображаем 1 input
+var form = document.getElementById('form');
+form.innerHTML = '<input id="input1" type="text" maxlength="1">';
+var input1 = document.getElementById('input1');
+input1.style.left = 38.5 * rand1 / 2 + 28 + 'px';
+input1.style.top = 50 - rand1 * 5 + 'px';
+input1.oninput = function () {
+    if (input1.value != rand1) {
+        example1.style.background = '#ff9d00';
+        input1.style.color = 'red';
+    }
+    else {
+        example1.style.background = '';
+        input1.style.color = 'black';
+        document.getElementById('form').removeChild(input1);
+        form.innerHTML = '<div id="input1">'+input1.value+'</div>';
+        document.getElementById('input1').style.left = 38.5 * rand1 / 2 + 28 + 'px';
+        document.getElementById('input1').style.top = 50 - rand1 * 5 + 'px';
+        step2();
+    }
+}
+//рисуем 1 дугу
+var c = document.getElementById("canvas");
+var ctx = c.getContext("2d");
+var x = 38.7;
+var y = 60;
+var endPointX = x * rand1 + x;
+var endPointY = y;
+var controlX_1 = x + 12;
+var controlY_1 = y - rand1 * 7;
+var controlX_2 = endPointX - 12;
+var controlY_2 = y - rand1 * 7;
+ctx.moveTo(x, y);
+ctx.bezierCurveTo(controlX_1, controlY_1, controlX_2, controlY_2, endPointX, endPointY);
+ctx.lineWidth = 3;
+ctx.strokeStyle = "red";
+ctx.stroke();
+
+//отображаем 2 input
+function step2() {
+    form.innerHTML += '<input id="input2" type="text" maxlength="1">';
+    var input2 = document.getElementById('input2');
+    input2.style.left = 38.5 * (rand1 + rand2 / 2) + 28 + 'px';
+    input2.style.top = 50 - rand2 * 5 + 'px';
+    
+    input2.oninput = function (){
+    if (input2.value != rand2) {
+        example2.style.background = '#ff9d00';
+        input2.style.color = 'red';
+    }
+    else {
+        example2.style.background = '';
+        input2.style.color = 'black';
+        document.getElementById('form').removeChild(input2);
+        form.innerHTML += '<div id="input2">' + input2.value+'</div>';
+        document.getElementById('input2').style.left = 38.5 * (rand1 + rand2 / 2) + 28 + 'px';
+        document.getElementById('input2').style.top = 50 - rand2 * 5 + 'px';
+        step3();
+    }
+}
+    
+    //рисуем 2 дугу
+    var endPointX2 = x * (rand2 + rand1) + x;
+    var endPointY2 = y;
+    var controlX_12 = endPointX + 12;
+    var controlY_12 = y - rand2 * 7;
+    var controlX_22 = endPointX2 - 12;
+    var controlY_22 = y - rand2 * 7;
+    ctx.bezierCurveTo(controlX_12, controlY_12, controlX_22, controlY_22, endPointX2, endPointY2);
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = "red";
+    ctx.stroke();
+}
+
+// считаем ответ
+function step3(){
+    document.getElementById('example-wraper').removeChild(document.getElementById('answer'));
+    document.getElementById('example-wraper').innerHTML += '<input id="answer" type="text" maxlength="2">';
+    var answer = document.getElementById('answer');
+    answer.oninput = function(){
+        if (answer.value != (rand1+rand2)){
+            answer.style.color = 'red';
+        }
+        else{
+            answer.style.color = 'black';
+            document.getElementById('example-wraper').removeChild(document.getElementById('answer'));
+            document.getElementById('example-wraper').innerHTML += '<div class="ex" id="answer">'+answer.value+'</div>';
+        }
+    }
+}
+    </script>
 </body>
 </html>
